@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             ShortURLTest01Theme {
-                ShortenUrl(viewModel) { getShortUrl(context = this, viewModel = viewModel) }
+                ShortenUrl(viewModel, viewModel::testUrlChange) { getShortUrl(context = this, viewModel = viewModel) }
             }
         }
     }

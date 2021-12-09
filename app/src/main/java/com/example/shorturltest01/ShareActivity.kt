@@ -3,7 +3,6 @@ package com.example.shorturltest01
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.URLUtil
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,7 +20,7 @@ class ShareActivity : ComponentActivity() {
 
         setContent {
             ShortURLTest01Theme {
-                ShortenUrl(viewModel) { getShortUrl(context = this, viewModel = viewModel) }
+                ShortenUrl(viewModel, viewModel::testUrlChange) { getShortUrl(context = this, viewModel = viewModel) }
             }
         }
     }
@@ -29,11 +28,13 @@ class ShareActivity : ComponentActivity() {
     private fun init() {
         if (Intent.ACTION_SEND == intent.action && intent.type != null) {
             viewModel.myUrl.value = intent.getStringExtra(Intent.EXTRA_TEXT).toString()
-            viewModel.testState.value = "Http：${URLUtil.isHttpUrl(viewModel.myUrl.value)}\n" +
-                    "About：${URLUtil.isAboutUrl(viewModel.myUrl.value)}\n" +
-                    "Content：${URLUtil.isContentUrl(viewModel.myUrl.value)}\n" +
-                    "Network：${URLUtil.isNetworkUrl(viewModel.myUrl.value)}\n" +
-                    "Https：${URLUtil.isHttpsUrl(viewModel.myUrl.value)}"
+            viewModel.testUrlChange(intent.getStringExtra(Intent.EXTRA_TEXT).toString())
+            viewModel.networkState.value = "Http：${URLUtil.isHttpUrl(viewModel.testUrl.value.text)}\n" +
+                    "About：${URLUtil.isAboutUrl(viewModel.testUrl.value.text)}\n" +
+                    "Content：${URLUtil.isContentUrl(viewModel.testUrl.value.text)}\n" +
+                    "Network：${URLUtil.isNetworkUrl(viewModel.testUrl.value.text)}\n" +
+                    "Https：${URLUtil.isHttpsUrl(viewModel.testUrl.value.text)}\n" +
+                    viewModel.testUrl.value.text + "\n" + viewModel.isNetworkUrl()
         }
     }
 }
