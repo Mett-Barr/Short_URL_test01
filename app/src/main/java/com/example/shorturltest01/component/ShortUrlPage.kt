@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.shorturltest01.MainViewModel
 
@@ -41,28 +42,23 @@ fun ShortenUrl(
 
     val testViewModelState by viewModel.testUrl
 
-    if (!viewModel.isNetworkUrl()) {
-        DisposableEffect(Unit) {
-            focusRequester.requestFocus()
-            onDispose { }
-        }
-    }
 
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .clickable(
+//                interactionSource = MutableInteractionSource(),
+//                indication = null
+//            ) { activity?.finish() },
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//    ) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = null
-            ) { activity?.finish() },
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+    Dialog(onDismissRequest = { activity?.finish() }) {
         Card(
             elevation = 8.dp,
             modifier = Modifier
-                .padding(48.dp)
+//                .padding(48.dp)
                 .clickable(
                     interactionSource = MutableInteractionSource(),
                     indication = null
@@ -108,6 +104,13 @@ fun ShortenUrl(
                             })
                         )
                 )
+                if (!viewModel.isNetworkUrl()) {
+                    DisposableEffect(Unit) {
+                        focusRequester.requestFocus()
+                        onDispose { }
+                    }
+                }
+
 
 //                TextField(
 //                    value = viewModel.myUrl.value,
@@ -167,6 +170,10 @@ fun ShortenUrl(
                 ) {
                     Text(text = "Test")
                 }
+                androidx.compose.material3.Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Test")
+                }
+
             }
         }
     }
